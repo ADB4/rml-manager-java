@@ -1,0 +1,68 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.0'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'com.github.node-gradle.node' version '7.0.1'
+}
+
+group = 'com.andybui'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '21'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'org.postgresql:postgresql'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'com.h2database:h2'
+}
+
+node {
+    version = '22.12.0'
+    yarnVersion = '1.22.19'
+    download = true
+    nodeProjectDir = file("${project.projectDir}/../frontend")  // Adjust path as needed
+}
+
+task installFrontend(type: YarnTask) {
+    description = 'Install frontend dependencies with Yarn'
+    args = ['install']
+}
+
+task buildFrontend(type: YarnTask) {
+    dependsOn installFrontend
+    description = 'Build frontend with Vite'
+    args = ['build']
+}
+
+task cleanFrontend(type: Delete) {
+    delete "${project.projectDir}/frontend/build"
+}
+
+clean.dependsOn cleanFrontend
+
+processResources {
+    dependsOn buildFrontend
+    from('frontend/build') {
+        into 'static'
+    }
+}
+tasks.named('test') {
+    useJUnitPlatform()
+}
