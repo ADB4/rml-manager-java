@@ -8,9 +8,9 @@ const api = axios.create({
     withCredentials: true,
 });
 
-const auth = localStorage.getItem('auth');
-if (auth) {
-    api.defaults.headers.common['Authorization'] = `Basic ${auth}`;
+const token = localStorage.getItem('token');
+if (token) {
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 }
 
 api.interceptors.request.use(
@@ -32,7 +32,9 @@ api.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response?.status === 401) {
-            localStorage.removeItem('auth');
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            delete api.defaults.headers.common['Authorization'];
             window.location.href = '/login';
         }
         return Promise.reject(error);

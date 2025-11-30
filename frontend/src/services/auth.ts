@@ -5,8 +5,8 @@ export interface LoginCredentials {
     password: string;
 }
 
-export interface AuthResponse {
-    message: string;
+export interface LoginResponse {
+    token: string;
     username: string;
 }
 
@@ -15,23 +15,29 @@ export interface AuthStatus {
     username: string | null;
 }
 
-class AuthService {
-    async login(credentials: LoginCredentials): Promise<AuthResponse> {
-        // Store credentials for Basic Auth
-        const basicAuth = btoa(`${credentials.username}:${credentials.password}`);
-        localStorage.setItem('auth', basicAuth);
+class authService {
+    async login(credentials: LoginCredentials): Promise<LoginResponse> {
+        const response = await api.post<LoginResponse>('/auth/login', credentials);
 
-        // Set default auth header
-        api.defaults.headers.common['Authorization'] = `Basic ${basicAuth}`;
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('username', response.data.username);
 
-        const response = await api.post<AuthResponse>('/auth/login', credentials);
+        api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+
         return response.data;
     }
 
     async logout(): Promise<void> {
-        localStorage.removeItem('auth');
+        localStorage.removeItem('token');
+        localStorage.removeItem('username');
         delete api.defaults.headers.common['Authorization'];
-        await api.post('/auth/logout');
+
+        try {
+            await api.post('/auth/logout');
+        } catch (error) {
+            // Ignore errors on logout
+            console.error('Logout error:', error);
+        }
     }
 
     async getStatus(): Promise<AuthStatus> {
@@ -40,15 +46,23 @@ class AuthService {
     }
 
     isAuthenticated(): boolean {
-        return !!localStorage.getItem('auth');
+        return !!localStorage.getItem('token');
+    }
+
+    getToken(): string | null {
+        return localStorage.getItem('token');
+    }
+
+    getUsername(): string | null {
+        return localStorage.getItem('username');
     }
 
     initAuth(): void {
-        const auth = localStorage.getItem('auth');
-        if (auth) {
-            api.defaults.headers.common['Authorization'] = `Basic ${auth}`;
+        const token = this.getToken();
+        if (token) {
+            api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         }
     }
 }
 
-export default new AuthService();
+export default new authService();

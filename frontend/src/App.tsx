@@ -1,7 +1,9 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import './App.css';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Container, AppBar, Toolbar, Typography, Box } from '@mui/material';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const theme = createTheme({
     palette: {
@@ -18,13 +20,21 @@ const theme = createTheme({
 function App() {
     return (
         <ThemeProvider theme={theme}>
-            <CssBaseline/>
-            <div className={"App"}>
-                    <Typography variant="h4" sx={{margin: "auto", outline: "2px solid red"}}gutterBottom>
-                        Welcome to Your App
-                    </Typography>
-            </div>
-
+            <CssBaseline />
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/login" element={<Login />} />
+                    <Route
+                        path="/"
+                        element={
+                            <ProtectedRoute>
+                                <Dashboard />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+            </BrowserRouter>
         </ThemeProvider>
     );
 }

@@ -26,8 +26,8 @@ export default function Login() {
         try {
             await authService.login({ username, password });
             navigate('/');
-        } catch (err) {
-            setError('Invalid credentials');
+        } catch (err: any) {
+            setError(err.response?.data?.error || 'Invalid credentials');
         } finally {
             setLoading(false);
         }
