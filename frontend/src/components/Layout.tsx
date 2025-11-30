@@ -31,7 +31,7 @@ export default function Layout({ children }: LayoutProps) {
                 outline: '2px solid red',
             }}
         >
-            <AppBar position="static">
+            <AppBar position="relative">
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         RML Manager
@@ -44,7 +44,12 @@ export default function Layout({ children }: LayoutProps) {
                     </Button>
                 </Toolbar>
             </AppBar>
-            <Container maxWidth="lg" sx={{ mt: 4 }}>
+            <Container maxWidth="xl"
+                       sx={{
+                           margin: 'auto',
+                           maxHeight: 'calc(100% - 2.0rem)',
+                           height: 'calc(100% - 8.0rem)',
+                       }}>
                 {children}
             </Container>
         </Box>
