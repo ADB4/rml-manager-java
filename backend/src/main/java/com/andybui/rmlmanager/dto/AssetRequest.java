@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class Model3DRequest {
+public class AssetRequest {
 
     @NotBlank(message = "Item ID is required")
     private String itemId;

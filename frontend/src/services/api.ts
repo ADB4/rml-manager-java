@@ -5,9 +5,14 @@ const api = axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
+    withCredentials: true,
 });
 
-// Request interceptor for adding auth tokens, etc.
+const auth = localStorage.getItem('auth');
+if (auth) {
+    api.defaults.headers.common['Authorization'] = `Basic ${auth}`;
+}
+
 api.interceptors.request.use(
     (config) => {
         // Add auth token if available
@@ -26,8 +31,10 @@ api.interceptors.request.use(
 api.interceptors.response.use(
     (response) => response,
     (error) => {
-        // Handle errors globally
-        console.error('API Error:', error);
+        if (error.response?.status === 401) {
+            localStorage.removeItem('auth');
+            window.location.href = '/login';
+        }
         return Promise.reject(error);
     }
 );

@@ -18,6 +18,7 @@ const theme = createTheme({
 function App() {
     return (
         <ThemeProvider theme={theme}>
+            <CssBaseline/>
             <div className={"App"}>
                     <Typography variant="h4" sx={{margin: "auto", outline: "2px solid red"}}gutterBottom>
                         Welcome to Your App

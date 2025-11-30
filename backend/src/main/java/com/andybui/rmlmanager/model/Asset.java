@@ -8,11 +8,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "models_3d")
+@Table(name = "assets")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Model3D {
+public class Asset {
 
     @Id
     @Column(name = "item_id", nullable = false, unique = true)
