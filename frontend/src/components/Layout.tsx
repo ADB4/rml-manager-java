@@ -16,7 +16,21 @@ export default function Layout({ children }: LayoutProps) {
     };
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                maxHeight: 'calc(100% - 2.0rem)',
+                height: '100%',
+                maxWidth: 'calc(100% - 2.0rem)',
+                width: '100%',
+                margin: 'auto',
+                backgroundColor: '#f5f5f5',
+                outline: '2px solid red',
+            }}
+        >
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>

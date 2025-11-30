@@ -1,10 +1,4 @@
-#root {
-    display: flex;
-    height: 100vh;
-    max-height: 100dvh;
-    width: 100%;
-    background-color: white;
-}
+
 .App {
     height: calc(100% - 2.0rem);
     width: calc(100% - 2.0rem);

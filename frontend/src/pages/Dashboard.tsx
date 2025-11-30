@@ -69,7 +69,7 @@ export default function Dashboard() {
 
     return (
         <Layout>
-            <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Box sx={{ margin: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Typography variant="h4">3D Assets</Typography>
                 <Button variant="contained" onClick={() => alert('Add asset - coming soon!')}>
                     Add Asset

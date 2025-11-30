@@ -2,6 +2,8 @@
 
 Spring Boot application for managing RML assets.
 
+Currently has no actual link to RML prod. Mainly using this to acquaint myself with java/spring and things like RBAC,
+
 ## Prerequisites
 
 - Java 21
