@@ -1,7 +1,11 @@
 package com.andybui.rmlmanager.service;
 
 import com.andybui.rmlmanager.config.S3StorageProperties;
+import com.andybui.rmlmanager.dto.GeometryResponseDto;
+//import com.andybui.rmlmanager.dto.GeometryUploadRequestDto;
+import com.andybui.rmlmanager.dto.GeometryUploadDto;
 import com.andybui.rmlmanager.exception.ResourceNotFoundException;
+import com.andybui.rmlmanager.mapper.GeometryMapper;
 import com.andybui.rmlmanager.model.Asset;
 import com.andybui.rmlmanager.model.GeometryFileType;
 import com.andybui.rmlmanager.model.Geometry;
@@ -16,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,14 +31,15 @@ public class GeometryService {
     private final AssetRepository assetRepository;
     private final S3StorageService s3StorageService;
     private final S3StorageProperties s3Properties;
+    private final GeometryMapper geometryMapper;
 
     @Transactional
-    public Geometry uploadGeometry(MultipartFile file, String assetId, String notes) {
-        log.info("Uploading geometry file for asset: {}", assetId);
+    public GeometryResponseDto uploadGeometry(MultipartFile file, GeometryUploadDto request) {
+        log.info("Uploading geometry file for asset: {}", request.getAssetId());
 
         // Validate asset exists
-        Asset asset = assetRepository.findById(assetId)
-                .orElseThrow(() -> new ResourceNotFoundException("Asset not found: " + assetId));
+        Asset asset = assetRepository.findById(request.getAssetId())
+                .orElseThrow(() -> new ResourceNotFoundException("Asset not found: " + request.getAssetId()));
 
         // Validate file
         if (file.isEmpty()) {
@@ -51,51 +57,72 @@ public class GeometryService {
         GeometryFileType fileType = GeometryFileType.fromExtension(extension);
 
         // Upload to S3
-        String s3Key = s3StorageService.uploadFile(file, assetId);
+        String s3Key = s3StorageService.uploadFile(file, request.getAssetId());
 
         // Get current user
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        //String uploadedBy = auth != null ? auth.getName() : "system";
+        String uploadedBy = auth != null ? auth.getName() : "system";
 
         // Create geometry record
         Geometry geometry = new Geometry();
         geometry.setAsset(asset);
         geometry.setFileName(s3Key.substring(s3Key.lastIndexOf("/") + 1));
-        geometry.setFileName(originalFileName);
         geometry.setFileType(fileType);
         geometry.setS3Key(s3Key);
         geometry.setS3Bucket(s3Properties.getBucketName());
         geometry.setFileSize(file.getSize());
         geometry.setContentType(file.getContentType());
-        //geometry.setUploadedBy(uploadedBy);
         geometry.setUploadSource("web_ui");
+
+        // Set optional metadata from request
+        if (request != null) {
+            geometry.setVertexCount(request.getVertexCount());
+            geometry.setPolygonCount(request.getPolygonCount());
+            geometry.setTriangleCount(request.getTriangleCount());
+            geometry.setHasTextures(request.getHasTextures());
+            geometry.setHasAnimation(request.getHasAnimation());
+            geometry.setHasSkeleton(request.getHasSkeleton());
+            geometry.setBoundsMinX(request.getBoundsMinX());
+            geometry.setBoundsMinY(request.getBoundsMinY());
+            geometry.setBoundsMinZ(request.getBoundsMinZ());
+            geometry.setBoundsMaxX(request.getBoundsMaxX());
+            geometry.setBoundsMaxY(request.getBoundsMaxY());
+            geometry.setBoundsMaxZ(request.getBoundsMaxZ());
+            geometry.setVersion(request.getVersion());
+        }
 
         Geometry saved = geometryRepository.save(geometry);
         log.info("Geometry uploaded successfully: {}", saved.getId());
 
-        return saved;
+        return geometryMapper.toResponse(saved);
     }
 
     @Transactional(readOnly = true)
-    public Geometry getGeometryById(String id) {
-        return geometryRepository.findById(id)
+    public GeometryResponseDto getGeometryById(String id) {
+        Geometry geometry = geometryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Geometry not found: " + id));
+        return geometryMapper.toResponse(geometry);
     }
 
     @Transactional(readOnly = true)
-    public List<Geometry> getGeometriesByAsset(String assetId) {
-        return geometryRepository.findByAssetId(assetId);
+    public List<GeometryResponseDto> getGeometriesByAsset(String assetId) {
+        List<Geometry> geometries = geometryRepository.findByAssetId(assetId);
+        return geometries.stream()
+                .map(geometryMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public String getDownloadUrl(String id) {
-        Geometry geometry = getGeometryById(id);
+        Geometry geometry = geometryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Geometry not found: " + id));
         return s3StorageService.generatePresignedUrl(geometry.getS3Key());
     }
 
     @Transactional
     public void deleteGeometry(String id) {
-        Geometry geometry = getGeometryById(id);
+        Geometry geometry = geometryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Geometry not found: " + id));
 
         // Delete from S3
         try {
