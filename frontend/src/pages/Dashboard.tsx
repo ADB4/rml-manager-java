@@ -126,6 +126,18 @@ export default function Dashboard() {
                         </Table>
                     </TableContainer>
                 )}
+                <TableContainer
+                    component={Paper}
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        minWidth: '24.0rem',
+                        width: 'auto',
+                        padding: '1.0rem',
+                    }}
+                >
+                    ASSET VIEWER
+                </TableContainer>
             </Box>
 
         </Layout>

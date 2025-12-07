@@ -2,16 +2,23 @@ package com.andybui.rmlmanager.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
-public class AssetRequest {
+@NoArgsConstructor
+@AllArgsConstructor
+public class AssetDto {
 
-    @NotBlank(message = "Item ID is required")
-    private String itemId;
+    @NotBlank(message = "Asset code is required")
+    private String assetCode;
 
-    @NotBlank(message = "Item name is required")
-    private String itemName;
+    @NotBlank(message = "Asset name is required")
+    private String assetName;
 
     @NotBlank(message = "Category is required")
     private String category;
@@ -33,5 +40,5 @@ public class AssetRequest {
     private Boolean animation;
 
     @NotBlank(message = "LODs is required")
-    private String lods;
+    private List<Integer> lods = new ArrayList<>();
 }

@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "aws.s3")
 @Data
-public class FileStorageProperties {
+public class S3StorageProperties {
     private String bucketName;
     private String region;
     private String accessKeyId;
