@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import api from '../services/api';
 import Layout from '../components/Layout';
+import {CreateAssetComponent} from "../components/CreateAssetComponent.tsx";
 
 interface Asset {
     itemId: string;
@@ -72,6 +73,7 @@ export default function Dashboard() {
             <Box sx={{ display: 'flex', columnGap: '2.0rem', width: '100%', height: '100%', backgroundColor: 'light-blue',}}>
                 <Box sx={{
                     margin: 'auto',
+                    marginLeft: '0rem',
                     display: 'flex',
                     flexDirection: 'column',
                     rowGap: '0.5rem',
@@ -83,63 +85,18 @@ export default function Dashboard() {
                 }}>
                     <Typography variant="h5">CONSOLE</Typography>
                     <Button variant="contained" onClick={() => alert('Add asset - coming soon!')}>
-                        VIEW ASSETS
-                    </Button>
-                    <Button variant="contained" onClick={() => alert('Add asset - coming soon!')}>
-                        EDIT ASSETS
+                        CREATE ASSET
                     </Button>
                 </Box>
-
-                {assets.length === 0 ? (
-                    <Paper sx={{ p: 3, textAlign: 'center' }}>
-                        <Typography color="text.secondary">
-                            No assets found. Create your first asset!
-                        </Typography>
-                    </Paper>
-                ) : (
-                    <TableContainer component={Paper}>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>Item ID</TableCell>
-                                    <TableCell>Name</TableCell>
-                                    <TableCell>Category</TableCell>
-                                    <TableCell>Subcategory</TableCell>
-                                    <TableCell>Material</TableCell>
-                                    <TableCell>Animation</TableCell>
-                                    <TableCell>LODs</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {assets.map((asset) => (
-                                    <TableRow key={asset.itemId}>
-                                        <TableCell>{asset.itemId}</TableCell>
-                                        <TableCell>{asset.itemName}</TableCell>
-                                        <TableCell>{asset.category}</TableCell>
-                                        <TableCell>{asset.subcategory}</TableCell>
-                                        <TableCell>{asset.material}</TableCell>
-                                        <TableCell>{asset.animation ? 'Yes' : 'No'}</TableCell>
-                                        <TableCell>{asset.lods}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                )}
-                <TableContainer
-                    component={Paper}
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        minWidth: '24.0rem',
-                        width: 'auto',
-                        padding: '1.0rem',
-                    }}
-                >
-                    ASSET VIEWER
-                </TableContainer>
+                <Box sx={{
+                    width: '100%',
+                    height: '100%',
+                    maxHeight: '100%',
+                    outline: '2px solid red',
+                }}>
+                    <CreateAssetComponent />
+                </Box>
             </Box>
-
         </Layout>
     );
 }

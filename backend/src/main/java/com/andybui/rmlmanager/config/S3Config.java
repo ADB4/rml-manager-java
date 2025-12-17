@@ -13,6 +13,26 @@ import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 @RequiredArgsConstructor
 public class S3Config {
 
+    /*
+    or, if u only need a basic s3 config
+        @Value("${aws.accessKeyId}")
+    private String accessKeyId;
+
+    @Value("${aws.secretKey}")
+    private String secretKey;
+
+    @Value("${aws.region}")
+    private String region;
+
+    @Bean
+    public S3Client s3Client() {
+        return S3Client.builder()
+                .region(Region.of(region))
+                .credentialsProvider(StaticCredentialsProvider.create(
+                    AwsBasicCredentials.create(accessKeyId, secretKey)))
+                .build();
+    }
+    */
     private final S3StorageProperties s3Properties;
 
     @Bean

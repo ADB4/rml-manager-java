@@ -36,6 +36,39 @@ public class S3StorageService {
     /**
      * Upload file to S3 and return the S3 key
      */
+
+    /*
+    NEVER commit secrets. store as env variables:
+    export AWS_ACCESS_KEY_ID=your_staging_access_key
+    export AWS_SECRET_ACCESS_KEY=your_staging_secret_key
+    export AWS_REGION=us-east-1
+    getting a json from s3
+    private final S3Client s3Client;
+    private final ObjectMapper objectMapper;
+
+    @Value("${aws.s3.bucketName}")
+    private String bucketName;
+
+    public S3Service(S3Client s3Client, ObjectMapper objectMapper) {
+        this.s3Client = s3Client;
+        this.objectMapper = objectMapper;
+    }
+
+    public <T> T getJsonFromS3(String key, Class<T> valueType) {
+        try {
+            GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(key)
+                    .build();
+
+            ResponseInputStream<?> response = s3Client.getObject(getObjectRequest);
+            return objectMapper.readValue(response, valueType);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read JSON from S3", e);
+        }
+    }
+    */
+
     public String uploadFile(MultipartFile file, String assetId) {
         String originalFileName = StringUtils.cleanPath(file.getOriginalFilename());
 

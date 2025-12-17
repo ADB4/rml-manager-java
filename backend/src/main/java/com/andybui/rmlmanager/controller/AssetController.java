@@ -28,9 +28,9 @@ public class AssetController {
     }
 
     @GetMapping("/{itemId}")
-    public ResponseEntity<Asset> getAssetById(@PathVariable String id) {
-        log.info("GET /api/assets/{} - Fetching asset", id);
-        return ResponseEntity.ok(service.getAssetById(id));
+    public ResponseEntity<Asset> getAssetById(@PathVariable String itemId) {
+        log.info("GET /api/assets/itemId} - Fetching asset", itemId);
+        return ResponseEntity.ok(service.getAssetById(itemId));
     }
 
     @PostMapping
@@ -42,10 +42,10 @@ public class AssetController {
 
     @PutMapping("/{itemId}")
     public ResponseEntity<Asset> updateAsset(
-            @PathVariable String id,
+            @PathVariable String itemId,
             @Valid @RequestBody AssetDto request) {
-        log.info("PUT /api/assets/{} - Updating asset", id);
-        Asset updated = service.updateAsset(id, request);
+        log.info("PUT /api/assets/{} - Updating asset", itemId);
+        Asset updated = service.updateAsset(itemId, request);
         return ResponseEntity.ok(updated);
     }
 
