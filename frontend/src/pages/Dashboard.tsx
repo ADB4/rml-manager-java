@@ -39,8 +39,10 @@ export default function Dashboard() {
     const fetchAssets = async () => {
         try {
             setLoading(true);
-            const response = await api.get<Asset[]>('/assets');
+            const response = await api.get<Asset[]>('/library'); // NOT /library
             setAssets(response.data);
+            console.log("hello?");
+            console.log(response.data);
             setError('');
         } catch (err: any) {
             setError('Failed to load assets');

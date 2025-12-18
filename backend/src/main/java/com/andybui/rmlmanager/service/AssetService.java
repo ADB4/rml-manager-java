@@ -73,7 +73,10 @@ public class AssetService {
         repository.deleteById(itemId);
         log.info("Successfully deleted asset with id: {}", itemId);
     }
-
+    @Transactional(readOnly = true)
+    public boolean existsByAssetCode(String assetCode) {
+        return repository.existsByAssetCode(assetCode);
+    }
     @Transactional(readOnly = true)
     public List<Asset> getAssetsByCategory(String category) {
         log.debug("Fetching assets by category: {}", category);
