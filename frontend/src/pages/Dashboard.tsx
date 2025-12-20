@@ -2,13 +2,6 @@ import { useEffect, useState } from 'react';
 import {
     Typography,
     Button,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
     CircularProgress,
     Box,
 } from '@mui/material';
@@ -28,6 +21,7 @@ interface Asset {
 }
 
 export default function Dashboard() {
+    // @ts-ignore
     const [assets, setAssets] = useState<Asset[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');

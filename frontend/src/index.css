@@ -1,10 +1,73 @@
+@font-face {
+    font-family: Swiss721;
+    src: url("https://d2fhlomc9go8mv.cloudfront.net/static/fonts/Swiss721Regular.woff2");
+    font-weight: 200;
+    font-style: normal;
+}
+@font-face {
+    font-family: Swiss721;
+    src: url("https://d2fhlomc9go8mv.cloudfront.net/static/fonts/Swiss721Light.woff2");
+    font-weight: 100;
+}
+@font-face {
+    font-family: Swiss721;
+    src: url("https://d2fhlomc9go8mv.cloudfront.net/static/fonts/Swiss721RegularItalic.woff2");
+    font-weight: 200;
+    font-style: italic;
+}
+@font-face {
+    font-family: Swiss721;
+    src: url("https://d2fhlomc9go8mv.cloudfront.net/static/fonts/Swiss721Medium.woff2");
+    font-weight: 300;
+}
+@font-face {
+    font-family: Swiss721;
+    src: url("https://d2fhlomc9go8mv.cloudfront.net/static/fonts/Swiss721MediumItalic.woff2");
+    font-weight: 300;
+    font-style: italic;
+}
+@font-face {
+    font-family: Swiss721;
+    src: url("https://d2fhlomc9go8mv.cloudfront.net/static/fonts/Swiss721Bold.woff2");
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: GaramondCondensed;
+    src: url("https://d2fhlomc9go8mv.cloudfront.net/static/fonts/GaramondCondensed.woff2");
+    font-weight: 200 normal;
+}
+@font-face {
+    font-family: GaramondCondensed;
+    src: url("https://d2fhlomc9go8mv.cloudfront.net/static/fonts/GaramondCondensedLight.woff2");
+    font-weight: 100;
+}
+@font-face {
+    font-family: GaramondCondensed;
+    src: url("https://d2fhlomc9go8mv.cloudfront.net/static/fonts/GaramondCondensedLightItalic.woff2");
+    font-weight: 100;
+    font-style: italic;
+}
+@font-face {
+    font-family: GaramondCondensed;
+    src: url("https://d2fhlomc9go8mv.cloudfront.net/static/fonts/GaramondCondensedItalic.woff2");
+    font-weight: 200;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: MDIO;
+    src: url("https://d2fhlomc9go8mv.cloudfront.net/static/fonts/MDIO-Regular.woff");
+    font-weight: 200 normal;
+    font-style: normal;
+}
 #root {
     display: flex;
     justify-content: center;
     height: 100vh;
     max-height: 100dvh;
     width: 100vw;
-    background-color: gray;
+    background-color: black;
     font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
